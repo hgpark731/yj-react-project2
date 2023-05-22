@@ -1,5 +1,4 @@
-import { Text, Box, VStack, HStack, Grid, GridItem } from "@chakra-ui/react";
-import { Children } from "react";
+import { Text, Box, VStack, HStack } from "@chakra-ui/react";
 import {
   AiFillApple,
   AiOutlineHome,
