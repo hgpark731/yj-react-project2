@@ -1,61 +1,96 @@
-import { Text, Box, VStack, HStack } from "@chakra-ui/react";
-import {
-  AiFillApple,
-  AiOutlineHome,
-  AiOutlineProfile,
-  AiOutlineContacts,
-} from "react-icons/ai";
+import { Text, Box, HStack, VStack } from "@chakra-ui/react";
+import { Children } from "react";
+import { AiFillApple, AiFillHome, AiOutlineArrowLeft } from "react-icons/ai";
+import { ImProfile } from "react-icons/im";
+import { IoIosContact } from "react-icons/io";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
-export default function Layout({ children }) {
+const GNB = [
+  { title: "홈", href: "/", icon: AiFillHome },
+  { title: "프로필", href: "/profile", icon: ImProfile },
+  { title: "연락처", href: "/contact", icon: IoIosContact },
+];
+
+export default function Layout({ children, canGoBack, title }) {
+  const location = useLocation();
+  const navigate = useNavigate();
+  console.log(location.pathname);
+
+  const handleClick = () => {
+    navigate(-1);
+  };
+
   return (
     <>
-      <Box w="full" display="flex" justifyContent={"center"}>
+      <Box w="full" display="flex" justifyContent="center">
         <VStack w="sm">
-          {/* header */}
+          {/*헤더 */}
           <Box
-            zIndex={9}
-            bg={"#222"}
-            position={"fixed"}
-            top={"0"}
-            w={"inherit"}
-            h={"120px"}
-            display={"flex"}
-            justifyContent={"center"}
-            alignItems={"center"}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            position="fixed"
+            top="0"
+            w="inherit"
+            h="120px"
+            bg="#222"
+            zIndex="9"
           >
-            <AiFillApple size={32} color={"white"} />
+            {canGoBack ? (
+              <Box
+                position="absolute"
+                left="20px"
+                cursor="pointer"
+                onClick={handleClick}
+              >
+                <AiOutlineArrowLeft color="#fff" size="20px" />
+              </Box>
+            ) : null}
+            {canGoBack ? (
+              <Text color="#fff">{title}</Text>
+            ) : (
+              <AiFillApple size={32} color="#eee" />
+            )}
           </Box>
 
-          {/* contents */}
+          {/*본문*/}
           {children}
-          {/* footer */}
-          <Box
-            bg={"#222"}
-            position={"fixed"}
-            bottom={"0"}
-            w={"inherit"}
-            h={"120px"}
-          >
-            <HStack
-              h={"inherit"}
-              justifyContent={"space-between"}
-              alignItems={"center"}
-              fontSize={"16px"}
-            >
-              <VStack w={"full"} color={"#fff"}>
-                <AiOutlineHome />
-                <Text>Home</Text>
-              </VStack>
-              <VStack w={"full"} color={"#fff"}>
-                <AiOutlineProfile />
-                <Text>Profile</Text>
-              </VStack>
-              <VStack w={"full"} color={"#fff"}>
-                <AiOutlineContacts />
-                <Text>Contact</Text>
-              </VStack>
-            </HStack>
-          </Box>
+
+          {/*tail*/}
+          {canGoBack ? null : (
+            <Box w="inherit" h="120px" bg="#222" position="fixed" bottom={0}>
+              <HStack
+                h="inherit"
+                justifyContent="space-around"
+                alignItems="center"
+              >
+                {GNB.map((item) => (
+                  <Box w="full">
+                    <Link to={item.href}>
+                      <VStack w="full" color="#eee">
+                        <item.icon
+                          color={
+                            location.pathname === item.href
+                              ? "#eeeeaa"
+                              : "white"
+                          }
+                        />
+                        <Text
+                          color={
+                            location.pathname === item.href
+                              ? "#eeeeaa"
+                              : "white"
+                          }
+                        >
+                          {item.title}
+                        </Text>
+                      </VStack>
+                    </Link>
+                  </Box>
+                ))}
+              </HStack>
+            </Box>
+          )}
         </VStack>
       </Box>
     </>
