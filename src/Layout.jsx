@@ -1,5 +1,4 @@
 import { Text, Box, HStack, VStack } from "@chakra-ui/react";
-import { Children } from "react";
 import { AiFillApple, AiFillHome, AiOutlineArrowLeft } from "react-icons/ai";
 import { ImProfile } from "react-icons/im";
 import { IoIosContact } from "react-icons/io";
